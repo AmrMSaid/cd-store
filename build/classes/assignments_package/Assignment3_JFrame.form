@@ -185,11 +185,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Retreive CD Info"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="retreiveCDInfoBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="increaseCDQuantityBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Increase CD Quantity"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="increaseCDQuantityBtnActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

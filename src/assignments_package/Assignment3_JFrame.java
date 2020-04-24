@@ -30,10 +30,10 @@ public class Assignment3_JFrame extends javax.swing.JFrame {
         for (int i = 0; i < cds.size(); i++) {
             CD cd = cds.get(i);
             if (name.equals(cd.getName())) {
-                if (cd.getQuantity() > 0){
+                if (cd.getQuantity() > 0) {
                     cd.setQuantity(cd.getQuantity() - 1);
                     JOptionPane.showMessageDialog(j, "Rented.", "Message", JOptionPane.INFORMATION_MESSAGE);
-                }else if (cd.getQuantity() == 0) {
+                } else if (cd.getQuantity() == 0) {
                     JOptionPane.showMessageDialog(j, "This CD is out of stock.", "Message", JOptionPane.INFORMATION_MESSAGE);
                 }
                 return;
@@ -41,6 +41,19 @@ public class Assignment3_JFrame extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(j, "This CD doesn't exist in stock.", "Message", JOptionPane.INFORMATION_MESSAGE);
     }
+
+    private void retrieve(String name) {
+        for (int i = 0; i < cds.size(); i++) {
+            CD cd = cds.get(i);
+            if (name.equals(cd.getName())) {
+                JOptionPane.showMessageDialog(j, "Name: " + cd.getName() + "\nQuantity: " + cd.getQuantity(), "CD Data", JOptionPane.INFORMATION_MESSAGE);
+                
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(j, "The CD doesn't exist.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -106,8 +119,18 @@ public class Assignment3_JFrame extends javax.swing.JFrame {
         });
 
         retreiveCDInfoBtn.setText("Retreive CD Info");
+        retreiveCDInfoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                retreiveCDInfoBtnActionPerformed(evt);
+            }
+        });
 
         increaseCDQuantityBtn.setText("Increase CD Quantity");
+        increaseCDQuantityBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                increaseCDQuantityBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -188,37 +211,40 @@ public class Assignment3_JFrame extends javax.swing.JFrame {
 
     private void addNewCDBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewCDBtnActionPerformed
         // TODO add your handling code here:
-
         if (seriesRadioBtn.isSelected()) {
             if (CDNameTxt.getText().equals("") || quantityTxt.getText().equals("") || noOfEpisodesTxt.getText().equals("")) {
-                JOptionPane.showMessageDialog(j, "Please, enter all the series info", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(j, "Please, enter all the series info.", "Error", JOptionPane.ERROR_MESSAGE);
+                
                 return;
             }
             try {
                 Integer.parseInt(quantityTxt.getText());
                 Integer.parseInt(noOfEpisodesTxt.getText());
             } catch (NumberFormatException n) {
-                JOptionPane.showMessageDialog(j, "You must enter the quantity and number of episodes as numbers", "Exception", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(j, "You must enter the quantity and number of episodes as numbers.", "Exception", JOptionPane.ERROR_MESSAGE);
+                
                 return;
             }
             Series s = new Series(CDNameTxt.getText(), Integer.parseInt(quantityTxt.getText()), Integer.parseInt(noOfEpisodesTxt.getText()));
             cds.add(s);
-            JOptionPane.showMessageDialog(j, "The Series is added successfully", "Info", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(j, "The Series is added successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
         } else if (movieRadioBtn.isSelected()) {
             if (CDNameTxt.getText().equals("") || quantityTxt.getText().equals("") || movieDurationTxt.getText().equals("")) {
-                JOptionPane.showMessageDialog(j, "Please, enter all the movie info", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(j, "Please, enter all the movie info.", "Error", JOptionPane.ERROR_MESSAGE);
+                
                 return;
             }
             try {
                 Integer.parseInt(quantityTxt.getText());
                 Integer.parseInt(movieDurationTxt.getText());
             } catch (NumberFormatException n) {
-                JOptionPane.showMessageDialog(j, "You must enter the quantity and movie duration as numbers", "Exception", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(j, "You must enter the quantity and movie duration as numbers.", "Exception", JOptionPane.ERROR_MESSAGE);
+                
                 return;
             }
             Movie m = new Movie(CDNameTxt.getText(), Integer.parseInt(quantityTxt.getText()), Integer.parseInt(movieDurationTxt.getText()));
             cds.add(m);
-            JOptionPane.showMessageDialog(j, "The Movie is added successfully", "Info", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(j, "The Movie is added successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_addNewCDBtnActionPerformed
 
@@ -226,6 +252,32 @@ public class Assignment3_JFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         rent(CDNameTxt.getText());
     }//GEN-LAST:event_rentTheCDBtnActionPerformed
+
+    private void retreiveCDInfoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retreiveCDInfoBtnActionPerformed
+        // TODO add your handling code here:
+        retrieve(CDNameTxt.getText());
+    }//GEN-LAST:event_retreiveCDInfoBtnActionPerformed
+
+    private void increaseCDQuantityBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_increaseCDQuantityBtnActionPerformed
+        // TODO add your handling code here:
+        for (int i = 0; i < cds.size(); i++) {
+            CD cd = cds.get(i);
+            if (CDNameTxt.getText().equals(cd.getName())) {
+                try {
+                    Integer.parseInt(quantityTxt.getText());
+                } catch (NumberFormatException n) {
+                    JOptionPane.showMessageDialog(j, "You must enter the quantity as a number.", "Exception", JOptionPane.ERROR_MESSAGE);
+
+                    return;
+                }
+                cd.increaseTheCDQuantityBy(Integer.parseInt(quantityTxt.getText()));
+                JOptionPane.showMessageDialog(j, "The quantity is increased.", "Message", JOptionPane.INFORMATION_MESSAGE);
+
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(j, "The CD doesn't exist.", "Error", JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_increaseCDQuantityBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -241,16 +293,24 @@ public class Assignment3_JFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Assignment3_JFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Assignment3_JFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Assignment3_JFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Assignment3_JFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Assignment3_JFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Assignment3_JFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Assignment3_JFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Assignment3_JFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -260,9 +320,7 @@ public class Assignment3_JFrame extends javax.swing.JFrame {
                 new Assignment3_JFrame().setVisible(true);
             }
         });
-
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CDNameTxt;
     private javax.swing.JButton addNewCDBtn;
